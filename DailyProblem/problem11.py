@@ -7,6 +7,7 @@
     Hint: Try preprocessing the dictionary into a more efficient data structure to speed up queries.
 """
 import string
+import time
 
 class Node:
     def __init__(self, value, left=None, right=None, next=None):
@@ -63,8 +64,12 @@ def find_words(word, root, arr, s):
 
 def autocomplete_v1(s, queries):
     res = []
+    start = time.time()
     root = build_tree_from_list(queries)
+    print("BUILD", time.time()-start)
+    start = time.time()
     find_words(s, root, res, "")
+    print("FIND", time.time()-start)
     return res
 
 def autocomplete_v0(s, queries):
@@ -82,9 +87,13 @@ def autocomplete_v0(s, queries):
     return res
 
 asc = string.ascii_lowercase
-combs = [val1+val2+val3 for val1 in asc for val2 in asc for val3 in asc]
+combs = [val1+val2+val3+val4 for val1 in asc for val2 in asc for val3 in asc for val4 in asc]
+#combs = [val1+val2+val3 for val1 in asc for val2 in asc for val3 in asc]
 print(len(combs))
 print(autocomplete_v0("de", ["dog", "deer", "deal"]))
 print(autocomplete_v1("dogs", ["dog", "deer", "deal", "dogs", "dee"]))
-print(autocomplete_v0("do", combs))
-print(autocomplete_v1("do", combs))
+start = time.time()
+autocomplete_v0("do", combs)
+print("V0",time.time()-start)
+
+autocomplete_v1("do", combs)
